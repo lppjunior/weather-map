@@ -15,4 +15,9 @@
 
         <div>Updated at {{ data.update  | date: "hh:mm:ss aa" }}</div>
     </div>
+
+    <div class="error">
+        <p>Something went wrong</p>
+        <button (click)="updateData()">Try Again</button>
+    </div>
 </div>

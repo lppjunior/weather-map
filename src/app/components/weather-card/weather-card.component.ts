@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Weather } from '../../model';
+import { APIWeatherService } from '../../services';
 
 @Component({
     selector: 'app-weather-card',
@@ -12,10 +13,18 @@ export class WeatherCardComponent implements OnInit {
 
     public weatherStatus: string;
 
-    constructor() {
-    }
+    constructor(
+        private _API: APIWeatherService
+    ) {}
 
     ngOnInit() {
+        this.updateData();
+    }
+
+    async updateData() {
+        this.data.status = 'loading';
+        this.data = await this._API.getWeather(this.data.city, this.data.country);
+
         if (this.data.weather <= 5) {
             this.weatherStatus = 'cold';
         } else if (this.data.weather <= 25) {
@@ -24,5 +33,4 @@ export class WeatherCardComponent implements OnInit {
             this.weatherStatus = 'hot';
         }
     }
-
 }
