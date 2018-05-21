@@ -15,7 +15,6 @@ export class AppComponent implements OnInit {
 
     constructor(
             private _titleService: Title,
-            private _API: APIWeatherService,
             private _config: ConfigService
     ) {
         this.TITLE = _config.get('TITLE');
@@ -30,19 +29,6 @@ export class AppComponent implements OnInit {
                 country: element.country,
                 status: 'loading'
             }));
-
-            this.updateWeather(element.city, element.country);
         });
-    }
-
-    async updateWeather(city: string, country: string) {
-        const weather = await this._API.getWeather(city, country);
-
-        for (let i = 0; i < this.weatherList.length; i++) {
-            if (weather.city === this.weatherList[i].city
-                && weather.country === this.weatherList[i].country) {
-                    this.weatherList[i] = weather;
-            }
-        }
     }
 }
