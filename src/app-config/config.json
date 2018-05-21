@@ -1,0 +1,9 @@
+{
+    "TITLE": "Weather Now",
+    "API_CACHE_TIME": 600,
+    "DEFAULT_WEATHER": [
+        "Nuuk/GL",
+        "Urubici/BR",
+        "Nairobi/KE"
+    ]
+}
