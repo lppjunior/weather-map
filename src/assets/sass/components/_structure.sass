@@ -1,0 +1,39 @@
+.app-header
+    background: #ffffff
+    position: fixed
+    top: 0
+    width: 100%
+    z-index: 10
+    .app-logo
+        background: transparent url(assets/imgs/logo.svg) no-repeat center center
+        background-size: cover
+        width: 165px
+        height: 24px
+        margin: 15px auto
+        color: transparent
+
+.container
+    background-color: $app-background
+    max-width: 1024px
+    margin: 54px auto 0 auto
+    +mq(800px, 'max')
+        &
+            max-width: 400px
+    .weather-cards
+        display: flex
+        justify-content: center
+        align-items: center
+        flex-wrap: wrap
+        height: 830px
+        padding: 25px 0
+        // +mq(800px, 'max')
+        //     &
+        //         height: auto
+        
+        +mq(900px, 'min')
+            & > :nth-child(1)
+                order: 2
+            & > :nth-child(2)
+                order: 1
+            & > :nth-child(3)
+                order: 3

@@ -1,0 +1,18 @@
+<div class="weather-card {{ data.status }}" [ngClass]="{ featured: data.featured }">
+    <h3 class="city">{{ data.city }}, {{ data.country }}</h3>
+    <div class="weather {{ weatherStatus }}">{{ data.weather }}<span>°</span></div>
+    <div class="footer">
+        <div class="details">
+            <div>
+                <p>HUMIDITY</p>
+                <p class="detail-value">{{ data.humidy }}<span>%</span></p>
+            </div>
+            <div>
+                <p>PRESSURE</p>
+                <p class="detail-value">{{ data.pressure }}<span>hPa</span></p>
+            </div>
+        </div>
+
+        <div>Updated at {{ data.update  | date: "hh:mm:ss aa" }}</div>
+    </div>
+</div>

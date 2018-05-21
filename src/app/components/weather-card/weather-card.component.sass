@@ -1,0 +1,65 @@
+@import '../../../assets/sass/settings/_pallet'
+@import '../../../assets/sass/tools/_mixins'
+
+.weather-card
+    width: 250px
+    background-color: $card-background
+    margin: 0 25px
+    text-align: center
+    -webkit-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1)
+    -moz-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1)
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1)
+
+    -webkit-border-radius: 4px
+    -moz-border-radius: 4px
+    border-radius: 4px
+    .city
+        color: $font-color-1
+        padding: 10px
+        border-bottom: 1px solid $divider
+        font-weight: normal
+    .weather
+        margin: 20px auto
+        width: 115px
+        font-size: 90px
+        > span
+            position: relative
+            top: -25px
+            right: 0
+            font-size: 50px
+        &.cold
+            color: $weather-cold
+        &.medium
+            color: $weather-medium
+        &.hot
+            color: $weather-hot
+    .footer
+        color: $font-color-2
+        background-color: $card-footer-background
+        font-size: 10px
+        padding: 15px 30px
+        .details
+            display: none
+            justify-content: space-between
+            margin-bottom: 5px
+            > div
+                .detail-value
+                    color: $font-color-1
+                    font-size: 18px
+                    padding: 5px 0
+                    > span
+                        font-size: 12px
+
+    &.featured
+        .footer
+            .details
+                display: flex
+    &.loading
+        .footer, .weather *
+            display: none
+        .weather
+            &::before
+                content: ''
+                background: transparent url(../../../assets/imgs/loader.svg) no-repeat center center
+                display: block
+                height: 150px
