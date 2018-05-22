@@ -36,33 +36,31 @@ export class APIWeatherService {
             const time_current = (new Date()).getTime();
 
             if (time_maturity - time_current > 0) {
-                return new Promise<Weather>((resolve, reject) => {
-                    data.weather  = Math.round(cache.weather);
-                    data.pressure = Math.round(cache.pressure);
-                    data.humidity = Math.round(cache.humidity);
-                    data.update = new Date(cache.update);
+                data.weather  = Math.round(cache.weather);
+                data.pressure = Math.round(cache.pressure);
+                data.humidity = Math.round(cache.humidity);
+                data.update = new Date(cache.update);
 
-                    resolve(data);
-                });
+                return Promise.resolve(data);
             }
         }
 
-        const request = await this._httpService.get<WeatherResponseInterface>(this.url, PARAMS);
-        return new Promise<Weather>((resolve, reject) => {
-            request.subscribe((response: WeatherResponseInterface) => {
-                data.weather  = Math.round(response.main.temp);
-                data.pressure = Math.round(response.main.pressure);
-                data.humidity = Math.round(response.main.humidity);
-                data.update = new Date(response.dt * 1000);
-                data.cache = new Date();
+        const req = this._httpService.get<WeatherResponseInterface>(this.url, PARAMS);
+        try {
+            const response = <WeatherResponseInterface> await req.toPromise();
 
-                localStorage.setItem('weather_data_' + data.id, JSON.stringify(data));
+            data.weather  = Math.round(response.main.temp);
+            data.pressure = Math.round(response.main.pressure);
+            data.humidity = Math.round(response.main.humidity);
+            data.update = new Date(response.dt * 1000);
+            data.cache = new Date();
 
-                resolve(data);
-            }, (error: any) => {
-                data.status = 'error';
-                reject(data);
-            });
-        });
+            localStorage.setItem('weather_data_' + data.id, JSON.stringify(data));
+
+        } catch (e) {
+            throw e;
+        }
+
+        return data;
     }
 }
