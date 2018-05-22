@@ -2,44 +2,67 @@ import { Injectable } from '@angular/core';
 
 import { HttpService } from '../http/http.service';
 import { Weather } from '../../model';
-import { WeatherInterface } from './api.weather.service.interfaces';
+import { WeatherResponseInterface } from './api.weather.service.interfaces';
+import { ConfigService } from '../config/config.service';
 
 @Injectable()
 export class APIWeatherService {
+    private url: string;
+    private appId: string;
+    private cacheTime: number;
 
     constructor(
-        private _httpService: HttpService
-    ) { }
+        private _httpService: HttpService,
+        private _config: ConfigService
+    ) {
+        const API = this._config.get('API');
 
-    public async getWeather(city: string, country: string): Promise<Weather> {
-        // @todo Implementar API
+        this.url = API.app_url;
+        this.appId = API.app_id;
+        this.cacheTime = API.cache_time;
+    }
 
-        // [ # ] Nuuk/GL, Urubici/BR e Nairobi/KE
-        // [   ] Temperatura deve ser exibidas em graus Celsius
-        // [   ] Umidade deve ser exibida em percentual
-        // [   ] Pressão deve ser exibida em hectoPascal
-        // [   ] As condições climáticas devem ser atualizadas a cada 10 minutos
-        // [   ] As condições climáticas devem ser cacheadas no front-end por 10 minutos
-
-        const URL = 'http://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22';
+    public async getWeather(data: Weather): Promise<Weather> {
         const PARAMS = {
-            q: city + ', ' + country,
-            appid: 'b6907d289e10d714a6e88b30761fae22'
+            appid: this.appId,
+            id: data.id,
+            units: 'metric'
         };
 
-        const STATUS = ['error', 'updated'];
+        const cache = JSON.parse(localStorage.getItem('weather_data_' + data.id));
 
-        const response = await this._httpService.get<WeatherInterface>(URL, PARAMS);
+        if (cache) {
+            const time_maturity = (new Date(cache.cache)).getTime() + this.cacheTime;
+            const time_current = (new Date()).getTime();
 
-        return new Weather({
-            city: city,
-            country: country,
-            weather: Math.round(1 + Math.random() * 30),
-            update: new Date(),
-            humidy: 12,
-            pressure: 11,
-            featured: city === 'Nuuk',
-            status: STATUS[Math.round(Math.random() * 1)]
+            if (time_maturity - time_current > 0) {
+                return new Promise<Weather>((resolve, reject) => {
+                    data.weather  = Math.round(cache.weather);
+                    data.pressure = Math.round(cache.pressure);
+                    data.humidity = Math.round(cache.humidity);
+                    data.update = new Date(cache.update);
+
+                    resolve(data);
+                });
+            }
+        }
+
+        const request = await this._httpService.get<WeatherResponseInterface>(this.url, PARAMS);
+        return new Promise<Weather>((resolve, reject) => {
+            request.subscribe((response: WeatherResponseInterface) => {
+                data.weather  = Math.round(response.main.temp);
+                data.pressure = Math.round(response.main.pressure);
+                data.humidity = Math.round(response.main.humidity);
+                data.update = new Date(response.dt * 1000);
+                data.cache = new Date();
+
+                localStorage.setItem('weather_data_' + data.id, JSON.stringify(data));
+
+                resolve(data);
+            }, (error: any) => {
+                data.status = 'error';
+                reject(data);
+            });
         });
     }
 }

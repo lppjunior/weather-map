@@ -23,7 +23,8 @@ export class WeatherCardComponent implements OnInit {
 
     async updateData() {
         this.data.status = 'loading';
-        this.data = await this._API.getWeather(this.data.city, this.data.country);
+        this.data = await this._API.getWeather(this.data);
+        this.data.status = 'updated';
 
         if (this.data.weather <= 5) {
             this.weatherStatus = 'cold';

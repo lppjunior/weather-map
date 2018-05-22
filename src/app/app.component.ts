@@ -23,10 +23,12 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.weatherList = new Array<Weather>();
-        this._config.get('DEFAULT_WEATHER').forEach(element => {
+        this._config.get('API').default_city.forEach(element => {
             this.weatherList.push(new Weather({
+                id: element.id,
                 city: element.city,
                 country: element.country,
+                featured: element.featured,
                 status: 'loading'
             }));
         });

@@ -1,9 +1,13 @@
 {
     "TITLE": "Weather Now",
-    "API_CACHE_TIME": 600,
-    "DEFAULT_WEATHER": [
-        "Nuuk/GL",
-        "Urubici/BR",
-        "Nairobi/KE"
-    ]
+    "API": {
+        "app_url": "https://openweathermap.org/data/2.5/weather/",
+        "app_id": "b6907d289e10d714a6e88b30761fae22",
+        "cache_time": 36000,
+        "default_city": [
+            { "id": 3445709, "country": "BR",  "city": "Urubici", "featured": true },
+            { "id": 3421319, "country": "GL",  "city": "Nuuk" },
+            { "id": 184745, "country": "KE",  "city": "Nairobi" }
+        ]
+    }
 }
