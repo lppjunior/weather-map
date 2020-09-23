@@ -114,8 +114,8 @@ $breakpoints: ("phone-small": 320px, "phone": 400px, "phone-wide": 480px, "phabl
 
 
         @else
-            $unit: unit($value);
-            $val: parseInt($value);
+            $unit: unit($value)
+            $val: parseInt($value)
 
             @if $unit == "px"
                 $px : append($px,  $value)
@@ -123,7 +123,7 @@ $breakpoints: ("phone-small": 320px, "phone": 400px, "phone-wide": 480px, "phabl
 
             @if $unit == "rem"
                 $px : append($px,  ($val * 10 + px))
-                $rem: append($rem, $value);
+                $rem: append($rem, $value)
 
     @if $px == $rem
         #{$property}: $px

@@ -3,7 +3,6 @@ import { Title } from '@angular/platform-browser';
 import { ConfigService } from './services/config/config.service';
 
 import { Weather } from './model';
-import { APIWeatherService } from './services';
 
 @Component({
     selector: 'app-root',
