@@ -38,7 +38,5 @@ export class WeatherCardComponent implements OnInit {
                 this.weatherStatus = 'hot';
             }
         }
-
-        console.log(this.data)
     }
 }
