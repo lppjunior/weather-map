@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ConfigService } from './services/config/config.service';
+import CONFIG from 'src/config'
 
 import { Weather } from './model';
 
@@ -13,16 +13,16 @@ export class AppComponent implements OnInit {
     public TITLE: string;
 
     constructor(
-            private _titleService: Title,
-            private _config: ConfigService
+            private _titleService: Title
     ) {
-        this.TITLE = _config.get('TITLE');
+        this.TITLE = CONFIG.TITLE;
         this._titleService.setTitle(this.TITLE);
+        this.weatherList = new Array<Weather>()
     }
 
     ngOnInit() {
         this.weatherList = new Array<Weather>();
-        this._config.get('API').default_city.forEach(element => {
+        CONFIG.API.default_city.forEach((element: Weather) => {
             this.weatherList.push(new Weather({
                 id: element.id,
                 city: element.city,

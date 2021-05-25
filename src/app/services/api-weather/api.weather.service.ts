@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { Weather } from '../../model';
 import { WeatherResponseInterface } from './api.weather.service.interfaces';
-import { ConfigService } from '../config/config.service';
+import CONFIG from 'src/config'
+
+const localStorage = window.localStorage
 
 @Injectable()
 export class APIWeatherService {
@@ -13,9 +15,8 @@ export class APIWeatherService {
 
     constructor(
         private _httpService: HttpService,
-        private _config: ConfigService
     ) {
-        const API = this._config.get('API');
+        const { API } = CONFIG;
 
         this.url = API.app_url;
         this.appId = API.app_id;
@@ -29,7 +30,7 @@ export class APIWeatherService {
             units: 'metric'
         };
 
-        const cache = JSON.parse(localStorage.getItem('weather_data_' + data.id));
+        const cache = JSON.parse(localStorage.getItem('weather_data_' + data.id) || '');
 
         if (cache) {
             const time_maturity = (new Date(cache.cache)).getTime() + this.cacheTime;

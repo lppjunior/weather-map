@@ -15,7 +15,10 @@ export class WeatherCardComponent implements OnInit {
 
     constructor(
         private _API: APIWeatherService
-    ) {}
+    ) {
+        this.weatherStatus = ''
+        this.data = new Weather({})
+    }
 
     ngOnInit() {
         this.updateData();
@@ -26,12 +29,16 @@ export class WeatherCardComponent implements OnInit {
         this.data = await this._API.getWeather(this.data);
         this.data.status = 'updated';
 
-        if (this.data.weather <= 5) {
-            this.weatherStatus = 'cold';
-        } else if (this.data.weather <= 25) {
-            this.weatherStatus = 'medium';
-        } else {
-            this.weatherStatus = 'hot';
+        if (this.data.weather) {
+            if (this.data.weather <= 5) {
+                this.weatherStatus = 'cold';
+            } else if (this.data.weather <= 25) {
+                this.weatherStatus = 'medium';
+            } else {
+                this.weatherStatus = 'hot';
+            }
         }
+
+        console.log(this.data)
     }
 }
