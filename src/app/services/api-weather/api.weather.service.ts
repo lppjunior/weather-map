@@ -30,7 +30,8 @@ export class APIWeatherService {
             units: 'metric'
         };
 
-        const cache = JSON.parse(localStorage.getItem('weather_data_' + data.id) || '');
+        const cacheData = localStorage.getItem('weather_data_' + data.id) || '';
+        const cache = cacheData && JSON.parse(cacheData);
 
         if (cache) {
             const time_maturity = (new Date(cache.cache)).getTime() + this.cacheTime;
